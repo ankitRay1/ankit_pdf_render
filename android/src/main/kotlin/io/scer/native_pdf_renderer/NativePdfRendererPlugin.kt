@@ -80,7 +80,7 @@ class NativePdfRendererPlugin : FlutterPlugin, MethodCallHandler {
     private fun openDocumentFileHandler(call: MethodCall, result: Result) {
         Thread {
             try {
-                val path = call.arguments<String>()!!
+               val path = call.arguments<String>() ?: throw NullPointerException("Path is required")
                 val documentRenderer = openFileDocument(File(path))
                 result.success(documents.register(documentRenderer).infoMap)
             } catch (e: NullPointerException) {
@@ -100,7 +100,7 @@ class NativePdfRendererPlugin : FlutterPlugin, MethodCallHandler {
     private fun openDocumentAssetHandler(call: MethodCall, result: Result) {
         Thread {
             try {
-                val path = call.arguments<String>()!!
+                val path = call.arguments<String>() ?: throw NullPointerException("Path is required")
                 val documentRenderer = openAssetDocument(path)
                 result.success(documents.register(documentRenderer).infoMap)
             } catch (e: NullPointerException) {
@@ -120,7 +120,7 @@ class NativePdfRendererPlugin : FlutterPlugin, MethodCallHandler {
 
     private fun closeDocumentHandler(call: MethodCall, result: Result) {
         try {
-            val id = call.arguments<String>()
+            val id = call.arguments<String>() ?: throw NullPointerException("ID is required")
             documents.close(id)
             result.success(null)
         } catch (e: NullPointerException) {
@@ -134,7 +134,7 @@ class NativePdfRendererPlugin : FlutterPlugin, MethodCallHandler {
 
     private fun closePageHandler(call: MethodCall, result: Result) {
         try {
-            val id = call.arguments<String>()
+             val id = call.arguments<String>() ?: throw NullPointerException("ID is required")
             pages.close(id)
             result.success(null)
         } catch (e: NullPointerException) {
